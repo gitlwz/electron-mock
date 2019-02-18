@@ -11,6 +11,11 @@ export default new Router({
             component: require('@/components/homePage/index.vue').default
         },
         {
+            path: '/addproject',
+            name: 'add-project',
+            component: require('@/components/addproject/index.vue').default
+        },
+        {
             path: '*',
             redirect: '/'
         }

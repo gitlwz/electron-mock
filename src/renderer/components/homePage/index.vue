@@ -1,13 +1,16 @@
 <template>
-    <div class="">
+    <div style="padding:20px">
         <div>
             <project
-                v-for="item in array"
-                :key="item"
+                v-for="item in projects"
+                :key="item.projectUrl"
+                :project="item"
             />
         </div>
         <div class="add-btn">
             <el-button
+                title="添加项目"
+                @click="addProject"
                 type="primary"
                 icon="el-icon-plus"
                 circle
@@ -18,13 +21,25 @@
 
 <script>
 import project from "../project/index";
+import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
 export default {
     name: "home-page",
     components: { project },
     data() {
-        return {
-            array: [1, 2]
-        };
+        return {};
+    },
+    computed: {
+        ...mapState("projects", {
+            projects: state => state.projects
+        })
+    },
+    created() {
+        this.$electron.ipcRenderer.send("refresh-project");
+    },
+    methods: {
+        addProject() {
+            this.$electron.ipcRenderer.send("open-addproject-pages");
+        }
     }
 };
 </script>

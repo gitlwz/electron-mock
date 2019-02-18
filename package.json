@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "electron-json-storage": "^4.1.6",
     "element-ui": "^2.5.4",
     "mockjs": "^1.0.1-beta3",
     "react-ace": "^6.4.0",
