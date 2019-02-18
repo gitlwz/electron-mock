@@ -1,0 +1,8 @@
+{
+    "prettier.tabWidth": 4,
+    "vetur.format.defaultFormatter.html": "prettier",
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+    "window.zoomLevel": 0,
+    "vetur.format.options.tabSize": 4,
+}
