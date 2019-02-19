@@ -21,7 +21,7 @@
 
 <script>
 import project from "../project/index";
-import { mapActions, mapMutations, mapState, mapGetters } from "vuex";
+import {  mapState } from "vuex";
 export default {
     name: "home-page",
     components: { project },

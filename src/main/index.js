@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
+import storage from "electron-json-storage";
 import './winPage/index.js';
 import "./ipmain/index.js";
 
@@ -16,15 +17,15 @@ const winURL = process.env.NODE_ENV === 'development'
     : `file://${__dirname}/index.html`
 global._winURL = winURL;
 
-
-
 function createWindow() {
     /**
      * Initial window options
      */
+    Menu.setApplicationMenu(null)
     mainWindow = new BrowserWindow({
         height: 563,
         useContentSize: true,
+        title: "mock",
         width: 1000
     })
 
@@ -32,6 +33,9 @@ function createWindow() {
 
     mainWindow.on('closed', () => {
         mainWindow = null
+    })
+    mainWindow.on('page-title-updated', (event) => {
+        event.preventDefault()
     })
 }
 

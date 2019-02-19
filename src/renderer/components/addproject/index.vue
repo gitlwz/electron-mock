@@ -49,14 +49,25 @@
 
 <script>
 import vHeader from "../v-header";
+import { mapState } from "vuex";
+import { cloneDeep } from "lodash";
 export default {
     name: "add-project",
     components: { "v-header": vHeader },
     data() {
+        const { projectUrl } = this.$route.query;
+        let formLabelAlign = {
+            projectUrl: new Date().getTime() + ""
+        };
+        if (!!projectUrl) {
+            formLabelAlign = cloneDeep(
+                this.$store.state.projects.projects[projectUrl] || {
+                    projectUrl: new Date().getTime() + ""
+                }
+            );
+        }
         return {
-            formLabelAlign: {
-                projectUrl: new Date().getTime() + ""
-            },
+            formLabelAlign,
             rules: {
                 name: [
                     {
@@ -82,20 +93,22 @@ export default {
             }
         };
     },
+    watch: {
+        "$store.state.projects.projects"(newdata, olddata) {
+            const { projectUrl } = this.$route.query;
+            if (!!projectUrl) {
+                this.formLabelAlign = cloneDeep(
+                    newdata[projectUrl] || {
+                        projectUrl: new Date().getTime() + ""
+                    }
+                );
+            }
+        }
+    },
     created() {
         const { projectUrl } = this.$route.query;
-        if (!!projectUrl) {
-            this.$electron.ipcRenderer.send(
-                "get-project-by-projectUrl",
-                projectUrl
-            );
-            this.$electron.ipcRenderer.on(
-                "get-project-by-projectUrl-reply",
-                (event, arg) => {
-                    this.formLabelAlign = arg;
-                }
-            );
-        }
+        console.log("888888", projectUrl);
+        // this.$electron.ipcRenderer.send("refresh-project");
     },
     methods: {
         submitForm(formName) {

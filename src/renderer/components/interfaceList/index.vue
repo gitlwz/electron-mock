@@ -2,7 +2,7 @@
     <div>
         <v-header
             icon="el-icon-menu"
-            name="创建项目"
+            :name="formLabelAlign.name"
             describe="接口列表"
         />
         <v-bar @addClick="addClick" />
@@ -51,11 +51,25 @@
 <script>
 import vHeader from "../v-header";
 import vBar from "../v-bar";
+import { mapState } from "vuex";
+import { cloneDeep } from "lodash";
 export default {
     name: "interface-list",
     components: { "v-header": vHeader, "v-bar": vBar },
     data() {
+        const { projectUrl } = this.$route.query;
+        let formLabelAlign = {
+            projectUrl: new Date().getTime() + ""
+        };
+        if (!!projectUrl) {
+            formLabelAlign = cloneDeep(
+                this.$store.state.projects.projects[projectUrl] || {
+                    projectUrl: new Date().getTime() + ""
+                }
+            );
+        }
         return {
+            formLabelAlign,
             tableData: [
                 {
                     date: "2016-05-02",
@@ -80,12 +94,24 @@ export default {
             ]
         };
     },
+    watch: {
+        "$store.state.projects.projects"(newdata, olddata) {
+            const { projectUrl } = this.$route.query;
+            if (!!projectUrl) {
+                this.formLabelAlign = cloneDeep(
+                    newdata[projectUrl] || {
+                        projectUrl: new Date().getTime() + ""
+                    }
+                );
+            }
+        }
+    },
     methods: {
         addClick() {
-            console.log("7777777");
+            this.$electron.ipcRenderer.send("open-interface-pages");
         },
-        handleSelectionChange(){
-            console.log("*********",arguments)
+        handleSelectionChange() {
+            // console.log("*********",arguments)
         }
     }
 };

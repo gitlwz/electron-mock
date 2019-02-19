@@ -20,7 +20,11 @@ export default new Router({
             name: 'interface-list',
             component: require('@/components/interfaceList/index.vue').default
         },
-        
+        {
+            path: '/interface',
+            name: 'interface',
+            component: require('@/components/interface/index.vue').default
+        },
         {
             path: '*',
             redirect: '/'

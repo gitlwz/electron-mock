@@ -7,12 +7,13 @@ import { createPersistedState, createSharedMutations } from 'vuex-electron'
 import modules from './modules'
 
 Vue.use(Vuex)
-console.log("&&&&&&&&&&&&&", modules)
 export default new Vuex.Store({
     modules,
     plugins: [
         createPersistedState({
-            blacklist: ["projects/REFRESHPROJECT"],
+            blacklist: ()=>{
+                return false  //不缓存  false  缓存
+            },
         }),
         createSharedMutations(),
         createLogger()

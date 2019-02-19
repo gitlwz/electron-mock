@@ -26,7 +26,6 @@ ipcMain.on('addproject-data', function (event, arg) {
 
 //删除某个项目
 ipcMain.on('delete-project', function (event, arg) {
-    console.log("&&&&&&&&&&&", arg)
     deleteProject(arg, () => {
         refreshProject();
     })

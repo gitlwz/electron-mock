@@ -1,4 +1,3 @@
-import { ipcMain } from 'electron';
 import storage from "electron-json-storage";
 export function reloadProject(arg, callBack) {
     storage.get(arg.projectUrl, (error, data) => {
