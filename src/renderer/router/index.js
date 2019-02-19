@@ -16,6 +16,12 @@ export default new Router({
             component: require('@/components/addproject/index.vue').default
         },
         {
+            path: '/interfaceList',
+            name: 'interface-list',
+            component: require('@/components/interfaceList/index.vue').default
+        },
+        
+        {
             path: '*',
             redirect: '/'
         }

@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron'
-import './winPage/addprojecpage';
+import './winPage/index.js';
 import "./ipmain/index.js";
 
 /**

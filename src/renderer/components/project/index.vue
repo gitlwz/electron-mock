@@ -18,6 +18,7 @@
         <div class="buttons-group">
             <el-button-group>
                 <el-button
+                    @click="openInterfaceList(project.projectUrl)"
                     title="查看项目所有接口"
                     size="mini"
                     icon="el-icon-search"
@@ -56,6 +57,12 @@ export default {
         projectEdit(projectUrl) {
             this.$electron.ipcRenderer.send(
                 "open-addproject-pages",
+                `?projectUrl=${projectUrl}`
+            );
+        },
+        openInterfaceList(projectUrl) {
+            this.$electron.ipcRenderer.send(
+                "open-interfacelist-pages",
                 `?projectUrl=${projectUrl}`
             );
         }
