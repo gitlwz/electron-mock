@@ -74,6 +74,8 @@ export default {
 .box-card {
     width: 270px;
     display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 .home-edit {
     float: right;

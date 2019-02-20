@@ -44,7 +44,7 @@
                     style="background: rgb(233, 34, 36); width: 26px; height: 26px; margin-top: -13px; margin-left: -13px; top: 23.2159%; left: 95%;"
                 ></span></div>
             <div class="form-box">
-                <div class="title">创建接口</div>
+                <div class="title">{{this.formLabelAlign.id?"修改接口":"创建接口"}}</div>
                 <el-card class="box-card">
                     <el-form
                         label-position="top"
@@ -95,7 +95,7 @@
                                 @click="submitForm('dynamicValidateForm')"
                                 type="primary"
                                 size="small"
-                            >创建</el-button>
+                            >{{this.formLabelAlign.id?"修改":"创建"}}</el-button>
                             <el-button
                                 @click="formatJsonData(dataView)"
                                 size="small"
@@ -113,6 +113,7 @@
 
 <script>
 import editor from "vue2-ace-editor";
+import { mapState } from "vuex";
 import "brace/ext/language_tools";
 import "brace/mode/json";
 import "brace/theme/monokai";
@@ -123,10 +124,14 @@ export default {
         editor
     },
     data() {
+        let { dataView, formLabelAlign } = this.resiveData(
+            this.$store.state.projects.projects
+        );
         return {
-            dataView: this.formatJson(JSON.stringify({ data: {} })),
+            dataView: dataView,
+            id: this.$route.query.id,
             ed: null,
-            formLabelAlign: {},
+            formLabelAlign: formLabelAlign,
             rules: {
                 method: [
                     {
@@ -155,6 +160,17 @@ export default {
     mounted() {
         console.log(document.getElementById("editor"));
     },
+    watch: {
+        "$store.state.projects.projects"(newdata, olddata) {
+            const { projectUrl } = this.$route.query;
+            if (!!projectUrl) {
+                let { dataView, formLabelAlign } = this.resiveData(newdata);
+
+                this.formLabelAlign = formLabelAlign;
+                this.dataView = dataView;
+            }
+        }
+    },
     methods: {
         editorInit(ed) {
             this.ed = ed;
@@ -172,10 +188,13 @@ export default {
                     if (valid) {
                         let _formLabelAlign = cloneDeep(this.formLabelAlign);
                         const { projectUrl } = this.$route.query;
+                        let falg = true;
                         _formLabelAlign.projectUrl = projectUrl;
                         if (!_formLabelAlign.id) {
                             _formLabelAlign.id = new Date().getTime() + "";
+                            falg = false;
                         }
+                        this.id = _formLabelAlign.id;
                         let jsonData = this.dataView;
                         _formLabelAlign.jsonData = jsonData;
                         this.$electron.ipcRenderer.send(
@@ -186,7 +205,7 @@ export default {
                             "edit-interface-reply",
                             (event, arg) => {
                                 this.$message({
-                                    message: "添加成功！",
+                                    message: falg ? "修改成功！" : "添加成功！",
                                     type: "success"
                                 });
                             }
@@ -218,6 +237,21 @@ export default {
                 callback && callback(false, e);
             }
             return json;
+        },
+        resiveData(projects) {
+            let { id = this.id, projectUrl } = this.$route.query;
+            let formLabelAlign = {};
+            let dataView = this.formatJson(JSON.stringify({ data: {} }));
+            if (!!id && !!projectUrl) {
+                let _formLabelAlign = cloneDeep(projects[projectUrl] || {});
+                let interfaceList = _formLabelAlign.interfaceList || [];
+
+                formLabelAlign = interfaceList.find(ele => ele.id === id) || {};
+                if (formLabelAlign.jsonData) {
+                    dataView = formLabelAlign.jsonData;
+                }
+            }
+            return { formLabelAlign, dataView };
         }
     }
 };

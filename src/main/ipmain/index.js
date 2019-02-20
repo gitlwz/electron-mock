@@ -1,6 +1,9 @@
 import { ipcMain } from 'electron';
-import { refreshProject, reloadProject, addProject, deleteProject, editInterface } from "../utils"
+import { refreshProject, reloadProject, addProject, deleteProject, editInterface, deleteInterface } from "../utils"
 import storage from "electron-json-storage";
+import server from "../httpServer/startServer";
+let myServer = new server();
+myServer.statrtServer();
 //刷新项目
 ipcMain.on('refresh-project', function (event, arg) {
     refreshProject();
@@ -47,3 +50,20 @@ ipcMain.on('edit-interface', function (event, arg) {
         event.sender.send('edit-interface-reply')
     })
 })
+
+//删除接口
+ipcMain.on('delete-interface', function (event, arg) {
+    deleteInterface(arg, () => {
+        refreshProject();
+    })
+})
+
+
+
+//删除接口
+ipcMain.on('get-interface-port', function (event, arg) {
+    if (!!myServer.server) {
+        event.sender.send('get-interface-port-reply', myServer.server.address().port)
+    }
+})
+

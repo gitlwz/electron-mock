@@ -57,6 +57,7 @@
     "axios": "^0.18.0",
     "electron-json-storage": "^4.1.6",
     "element-ui": "^2.5.4",
+    "express": "^4.16.4",
     "lodash": "^4.17.11",
     "mockjs": "^1.0.1-beta3",
     "vue": "^2.5.16",

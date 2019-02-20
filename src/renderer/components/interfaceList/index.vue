@@ -42,6 +42,28 @@
                     label="操作"
                     show-overflow-tooltip
                 >
+                    <template slot-scope="scope">
+                        <el-button-group>
+                            <el-button
+                                size="mini"
+                                @click="openInterface(scope.row.id,scope.row.projectUrl)"
+                                title="编辑接口"
+                                icon="el-icon-edit"
+                            ></el-button>
+                            <el-button
+                                @click="copyLnterface(scope.row.url,scope.row.projectUrl)"
+                                size="mini"
+                                title="复制接口连接"
+                                icon="el-icon-share"
+                            ></el-button>
+                            <el-button
+                                @click="delInterface(scope.row.id,scope.row.projectUrl)"
+                                size="mini"
+                                title="删除接口"
+                                icon="el-icon-delete"
+                            ></el-button>
+                        </el-button-group>
+                    </template>
                 </el-table-column>
             </el-table>
         </el-card>
@@ -97,6 +119,37 @@ export default {
         },
         handleSelectionChange() {
             // console.log("*********",arguments)
+        },
+        delInterface(id, projectUrl) {
+            this.$electron.ipcRenderer.send("delete-interface", {
+                id,
+                projectUrl
+            });
+        },
+        openInterface(id, projectUrl) {
+            this.$electron.ipcRenderer.send(
+                "open-interface-pages",
+                `?id=${id}&projectUrl=${projectUrl}`
+            );
+        },
+        copyLnterface(url, projectUrl) {
+            this.$electron.ipcRenderer.send("get-interface-port");
+            this.$electron.ipcRenderer.on(
+                "get-interface-port-reply",
+                (event, arg) => {
+                    let project = this.$store.state.projects.projects[
+                        projectUrl
+                    ];
+                    let copy = `http://localhost:${arg}/${projectUrl}/${
+                        project.url
+                    }/${url}`;
+                    this.$electron.clipboard.writeText(copy);
+                    this.$message({
+                        message: "地址复制成功,地址为" + copy,
+                        type: "success"
+                    });
+                }
+            );
         }
     }
 };
