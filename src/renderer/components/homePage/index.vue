@@ -8,7 +8,17 @@
             />
         </div>
         <div class="author">
-
+            <div class="top">
+                <img
+                    :src="favicon"
+                    alt=""
+                >
+                <span>刘文柱</span>
+            </div>
+            <div class="text">年轻无为，卖马为生</div>
+            <div class="url">
+                <span @click="openShell('https://gitlwz.github.io/')">个人博客</span>
+            </div>
         </div>
         <div class="add-btn">
             <el-button
@@ -24,12 +34,15 @@
 
 <script>
 import project from "../project/index";
-import {  mapState } from "vuex";
+import { mapState } from "vuex";
+import favicon from "@/assets/favicon.jpg";
 export default {
     name: "home-page",
     components: { project },
     data() {
-        return {};
+        return {
+            favicon
+        };
     },
     computed: {
         ...mapState("projects", {
@@ -42,6 +55,9 @@ export default {
     methods: {
         addProject() {
             this.$electron.ipcRenderer.send("open-addproject-pages");
+        },
+        openShell(url){
+            this.$electron.shell.openExternal(url)
         }
     }
 };
@@ -62,5 +78,36 @@ export default {
 .home-edit {
     float: right;
     cursor: pointer;
+}
+.author {
+    position: fixed;
+    left: 50px;
+    bottom: 50px;
+}
+.author .top {
+    display: flex;
+    font-size: 14px;
+    height: 30px;
+    align-items: center;
+}
+.author .top span {
+    margin-left: 14px;
+}
+.author .top img {
+    width: 30px;
+    border-radius: 50%;
+}
+.author .text {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #333;
+}
+.author .url {
+    margin-top: 12px;
+}
+.author .url span {
+    font-size: 12px;
+    cursor: pointer;
+    color: #409eff;
 }
 </style>
