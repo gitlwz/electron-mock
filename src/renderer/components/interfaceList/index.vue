@@ -23,16 +23,16 @@
                     label="Method"
                     width="120"
                 >
-                    <template slot-scope="scope">{{ scope.row.date }}</template>
+                    <template slot-scope="scope">{{ scope.row.method }}</template>
                 </el-table-column>
                 <el-table-column
-                    prop="name"
+                    prop="url"
                     label="URL"
                     width="120"
                 >
                 </el-table-column>
                 <el-table-column
-                    prop="address"
+                    prop="describe"
                     label="描述"
                     show-overflow-tooltip
                 >
@@ -61,37 +61,18 @@ export default {
         let formLabelAlign = {
             projectUrl: new Date().getTime() + ""
         };
+        let tableData = [];
         if (!!projectUrl) {
             formLabelAlign = cloneDeep(
                 this.$store.state.projects.projects[projectUrl] || {
                     projectUrl: new Date().getTime() + ""
                 }
             );
+            tableData = formLabelAlign.interfaceList;
         }
         return {
             formLabelAlign,
-            tableData: [
-                {
-                    date: "2016-05-02",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1518 弄"
-                },
-                {
-                    date: "2016-05-04",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1517 弄"
-                },
-                {
-                    date: "2016-05-01",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1519 弄"
-                },
-                {
-                    date: "2016-05-03",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1516 弄"
-                }
-            ]
+            tableData
         };
     },
     watch: {
@@ -103,12 +84,16 @@ export default {
                         projectUrl: new Date().getTime() + ""
                     }
                 );
+                this.tableData = this.formLabelAlign.interfaceList || [];
             }
         }
     },
     methods: {
-        addClick() {
-            this.$electron.ipcRenderer.send("open-interface-pages");
+        addClick(projectUrl) {
+            this.$electron.ipcRenderer.send(
+                "open-interface-pages",
+                `?projectUrl=${this.formLabelAlign.projectUrl}`
+            );
         },
         handleSelectionChange() {
             // console.log("*********",arguments)

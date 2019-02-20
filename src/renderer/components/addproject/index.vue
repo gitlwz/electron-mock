@@ -2,7 +2,7 @@
     <div>
         <v-header
             icon="el-icon-plus"
-            name="创建项目"
+            :name="name"
             describe="创建一个令人愉快的项目"
         />
         <el-card class="box-card">
@@ -59,15 +59,18 @@ export default {
         let formLabelAlign = {
             projectUrl: new Date().getTime() + ""
         };
+        let name = "创建项目";
         if (!!projectUrl) {
             formLabelAlign = cloneDeep(
                 this.$store.state.projects.projects[projectUrl] || {
                     projectUrl: new Date().getTime() + ""
                 }
             );
+            name = "修改项目";
         }
         return {
             formLabelAlign,
+            name,
             rules: {
                 name: [
                     {

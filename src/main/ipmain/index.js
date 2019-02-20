@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { refreshProject, reloadProject, addProject, deleteProject } from "../utils"
+import { refreshProject, reloadProject, addProject, deleteProject, editInterface } from "../utils"
 import storage from "electron-json-storage";
 //刷新项目
 ipcMain.on('refresh-project', function (event, arg) {
@@ -37,4 +37,13 @@ ipcMain.on('get-project-by-projectUrl', function (event, arg) {
         if (error) throw error;
         event.sender.send('get-project-by-projectUrl-reply', data)
     });
+})
+
+
+//添加接口
+ipcMain.on('edit-interface', function (event, arg) {
+    editInterface(arg, () => {
+        refreshProject();
+        event.sender.send('edit-interface-reply')
+    })
 })
