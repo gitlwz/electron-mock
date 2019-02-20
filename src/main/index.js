@@ -2,6 +2,7 @@ import { app, BrowserWindow, Menu } from 'electron'
 import storage from "electron-json-storage";
 import './winPage/index.js';
 import "./ipmain/index.js";
+require('electron-debug')({ showDevTools: true })
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -29,7 +30,6 @@ function createWindow() {
     })
 
     mainWindow.loadURL(winURL)
-
     mainWindow.on('closed', () => {
         mainWindow = null
     })
