@@ -53,6 +53,7 @@
                             <el-button
                                 @click="copyLnterface(scope.row.url,scope.row.projectUrl)"
                                 size="mini"
+                                :disabled="!httprot"
                                 title="复制接口连接"
                                 icon="el-icon-share"
                             ></el-button>
@@ -94,7 +95,8 @@ export default {
         }
         return {
             formLabelAlign,
-            tableData
+            tableData,
+            httprot: this.$store.state.prot.httpprot
         };
     },
     watch: {
@@ -108,6 +110,9 @@ export default {
                 );
                 this.tableData = this.formLabelAlign.interfaceList || [];
             }
+        },
+        "$store.state.prot.httpprot"(newdata, olddata) {
+            this.httprot = newdata;
         }
     },
     methods: {

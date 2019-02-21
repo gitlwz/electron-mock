@@ -24,7 +24,9 @@
                     icon="el-icon-search"
                 ></el-button>
                 <el-button
+                    :disabled="!httprot"
                     title="复制项目地址"
+                    @click="copyProject"
                     size="mini"
                     icon="el-icon-share"
                 ></el-button>
@@ -48,7 +50,14 @@ export default {
         }
     },
     data() {
-        return {};
+        return {
+            httprot: this.$store.state.prot.httpprot
+        };
+    },
+    watch: {
+        "$store.state.prot.httpprot"(newdata, olddata) {
+            this.httprot = newdata;
+        }
     },
     methods: {
         delProject(projectUrl) {
@@ -64,6 +73,23 @@ export default {
             this.$electron.ipcRenderer.send(
                 "open-interfacelist-pages",
                 `?projectUrl=${projectUrl}`
+            );
+        },
+        copyProject() {
+            this.$electron.ipcRenderer.send("get-interface-port");
+            this.$electron.ipcRenderer.on(
+                "get-interface-port-reply",
+                (event, arg) => {
+                    let project = this.project;
+                    let copy = `http://localhost:${arg}/${project.projectUrl}/${
+                        project.url
+                    }`;
+                    this.$electron.clipboard.writeText(copy);
+                    this.$message({
+                        message: "地址复制成功,地址为" + copy,
+                        type: "success"
+                    });
+                }
             );
         }
     }

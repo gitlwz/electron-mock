@@ -3,17 +3,30 @@ var express = require('express');
 var app = express();
 var Mock = require('mockjs');
 var http = require('http');
+import { dialog } from "electron";
 import storage from "electron-json-storage";
-
+import { refreshProt, getIPAdress, setProt } from "../utils"
 export default class MyServer {
     constructor() {
         this.server = null;
     }
-    statrtServer(port = 9090) {
+    statrtServer(port) {
         let that = this;
         let server = http.createServer(app)
         this.server = server.listen(port, () => {
-
+            refreshProt();
+            // const options = {
+            //     type: 'info',
+            //     title: '服务已启动',
+            //     message: `启动地址http://${getIPAdress()}:${port}`,
+            // }
+            // dialog.showMessageBox(options, function (index) { })
+        })
+        server.on("error", function (error) {
+            if (error.code === "EADDRINUSE") {
+                dialog.showErrorBox('启动服务发生错误！', `${error.port}端口已经错在！请修改端口后再启动服务`)
+                that.server = null;
+            }
         })
         app.all('*', function (req, res, next) {
             res.header('Access-Control-Allow-Origin', '*');
@@ -50,11 +63,18 @@ export default class MyServer {
             }
         });
     }
-    closeServer() {
+    closeServer(callBack) {
         if (!!this.server) {
             this.server.close(() => {
                 this.server = null;
-                console.log("server close");
+                setProt(0)
+                const options = {
+                    type: 'info',
+                    title: '服务已关闭',
+                    message: `当前http服务已关闭！`,
+                }
+                dialog.showMessageBox(options, function (index) { })
+                callBack && callBack();
             });
         }
     }

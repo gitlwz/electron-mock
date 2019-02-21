@@ -50,6 +50,15 @@
     },
     "linux": {
       "icon": "build/icons"
+    },
+    "nsis":{
+        "oneClick":false,
+        "allowElevation":true,
+        "createDesktopShortcut":true,
+        "createStartMenuShortcut":true,
+        "perMachine":true,
+        "unicode":true,
+        "allowToChangeInstallationDirectory":true
     }
   },
   "dependencies": {

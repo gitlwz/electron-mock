@@ -26,6 +26,11 @@ export default new Router({
             component: require('@/components/interface/index.vue').default
         },
         {
+            path: '/server-seting',
+            name: 'server-seting',
+            component: require('@/components/serverSeting/index.vue').default
+        },
+        {
             path: '*',
             redirect: '/'
         }

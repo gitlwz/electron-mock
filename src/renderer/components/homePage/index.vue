@@ -1,6 +1,6 @@
 <template>
     <div style="padding:20px">
-        <div>
+        <div style="margin-bottom:120px">
             <project
                 v-for="item in projects"
                 :key="item.projectUrl"
@@ -17,7 +17,8 @@
             </div>
             <div class="text">年轻无为，卖马为生</div>
             <div class="url">
-                <span @click="openShell('https://gitlwz.github.io/')">个人博客</span>
+                <span class="span-item" @click="serverSetingClick">当前服务配置</span>
+                <span class="span-item" @click="openShell('https://gitlwz.github.io/')">个人博客</span>
             </div>
         </div>
         <div class="add-btn">
@@ -56,8 +57,11 @@ export default {
         addProject() {
             this.$electron.ipcRenderer.send("open-addproject-pages");
         },
-        openShell(url){
-            this.$electron.shell.openExternal(url)
+        openShell(url) {
+            this.$electron.shell.openExternal(url);
+        },
+        serverSetingClick(){
+            this.$electron.ipcRenderer.send("open-server-seting-pages");
         }
     }
 };
@@ -109,5 +113,7 @@ export default {
     font-size: 12px;
     cursor: pointer;
     color: #409eff;
+    margin-right: 14px;
 }
+
 </style>
