@@ -12,8 +12,13 @@
                 <p v-else style="color:red">
                     当前http服务未启动
                 </p>
-                <p>
-                    websocket地址:<span>ws://localhost:{{ 8999 }}/ws</span>
+                <p v-if="!!websocketprot">
+                    websocket地址:<span
+                        >ws://localhost:{{ websocketprot }}/ws</span
+                    >
+                </p>
+                <p v-else style="color:red">
+                    当前websocket服务未启动
                 </p>
             </template>
         </v-header>
@@ -67,7 +72,7 @@
                                     )
                                 "
                                 size="mini"
-                                :disabled="!httprot"
+                                :disabled="scope.row.method == 'websocket'?!websocketprot:!httprot"
                                 title="复制接口连接"
                                 icon="el-icon-share"
                             ></el-button>
@@ -116,7 +121,8 @@ export default {
             name: "name",
             formLabelAlign,
             tableData,
-            httprot: this.$store.state.prot.httpprot
+            httprot: this.$store.state.prot.httpprot,
+            websocketprot: this.$store.state.prot.websocketprot
         };
     },
     watch: {
@@ -133,6 +139,9 @@ export default {
         },
         "$store.state.prot.httpprot"(newdata, olddata) {
             this.httprot = newdata;
+        },
+        "$store.state.prot.websocketprot"(newdata, olddata) {
+            this.websocketprot = newdata;
         }
     },
     methods: {

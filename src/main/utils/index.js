@@ -6,6 +6,8 @@ import { editInterface } from "./editInterface";
 import { deleteInterface } from "./deleteInterface";
 import { refreshProt } from "./refreshProt";
 import { setProt } from "./setProt";
+import { setSocketProt } from "./setSocketProt";
+import { refreshSocketProt } from "./refreshSocketProt";
 function startServer(myServer, prot) {
     if (prot !== undefined) {
         storage.set('prot', { httpprot: prot }, function (error) {
@@ -26,6 +28,14 @@ function startServer(myServer, prot) {
             }
         });
     }
+}
+function startSocket(myServer, prot) {
+    storage.get('sockprot', function (error, data) {
+        if (error) throw error;
+        let { websocketprot = 8999 } = data;
+        if (!websocketprot) websocketprot = 8999
+        myServer.startServer(websocketprot);
+    });
 }
 
 function getIPAdress() {
@@ -50,5 +60,8 @@ export {
     refreshProt,
     startServer,
     getIPAdress,
-    setProt
+    setProt,
+    setSocketProt,
+    refreshSocketProt,
+    startSocket
 }

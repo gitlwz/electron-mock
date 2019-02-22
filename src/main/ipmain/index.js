@@ -1,12 +1,12 @@
 import { ipcMain } from 'electron';
-import { startServer, refreshProject, reloadProject, addProject, deleteProject, editInterface, deleteInterface } from "../utils"
+import { setSocketProt, startSocket, startServer, refreshProject, reloadProject, addProject, deleteProject, editInterface, deleteInterface } from "../utils"
 import storage from "electron-json-storage";
 import server from "../httpServer/startServer";
 import webSocketServer from "../httpServer/webSocketServer";
 let myServer = new server();
 let mywebSocketServer = new webSocketServer();
 startServer(myServer);
-mywebSocketServer.startServer();
+startSocket(mywebSocketServer)
 //刷新项目
 ipcMain.on('refresh-project', function (event, arg) {
     refreshProject();
@@ -81,6 +81,19 @@ ipcMain.on('close-http-server', function (event, arg) {
 
 //打开服务
 ipcMain.on('open-http-server', function (event, arg) {
-    console.log("**********",arg)
     startServer(myServer, arg);
+})
+
+
+//关闭服务
+ipcMain.on('close-websocket-server', function (event, arg) {
+    mywebSocketServer.closeServer();
+})
+
+//开启
+ipcMain.on('open-websocket-server', function (event, arg) {
+    console.log("&&&&&&&&&&7",arg)
+    setSocketProt(arg, () => {
+        startSocket(mywebSocketServer)
+    });
 })

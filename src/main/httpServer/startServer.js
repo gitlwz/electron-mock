@@ -23,6 +23,7 @@ export default class MyServer {
             // dialog.showMessageBox(options, function (index) { })
         })
         server.on("error", function (error) {
+            setProt(0)
             if (error.code === "EADDRINUSE") {
                 dialog.showErrorBox('启动服务发生错误！', `${error.port}端口已经错在！请修改端口后再启动服务`)
                 that.server = null;

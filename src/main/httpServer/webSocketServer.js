@@ -2,6 +2,7 @@ const WebSocket = require('ws');
 var Mock = require('mockjs');
 import { dialog } from "electron";
 import storage from "electron-json-storage";
+import { setSocketProt } from "../utils"
 
 export default class Socket {
     constructor() {
@@ -11,16 +12,18 @@ export default class Socket {
         this.wss = new WebSocket.Server({
             port: port
         });
+        setSocketProt(port)
         this.wss.on('connection', (ws) => {
             ws.on('message', (message) => {
                 this.autoSocket(ws, message)
             });
             this.ws = ws;
         });
-        this.wss.on("error",(error)=>{
+        this.wss.on("error", (error) => {
             if (error.code === "EADDRINUSE") {
                 dialog.showErrorBox('WebSocket启动发生错误！', `${error.port}端口已经错在！请修改端口后再启动服务`)
                 this.wss;
+                setSocketProt(0)
             }
         })
     }
@@ -65,6 +68,13 @@ export default class Socket {
         if (!!this.wss) {
             this.wss.close(() => {
                 this.wss = null;
+                setSocketProt(0)
+                const options = {
+                    type: 'info',
+                    title: '服务已关闭',
+                    message: `当前websocket服务已关闭！`,
+                }
+                dialog.showMessageBox(options, function (index) { })
             })
         }
     }

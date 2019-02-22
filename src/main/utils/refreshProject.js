@@ -4,6 +4,7 @@ export function refreshProject() {
     storage.getAll(function (error, data) {
         if (error) throw error;
         delete data.prot;
+        delete data.sockprot;
         store.dispatch("projects/refreshProject", data)
     });
 }
