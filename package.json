@@ -51,14 +51,14 @@
     "linux": {
       "icon": "build/icons"
     },
-    "nsis":{
-        "oneClick":false,
-        "allowElevation":true,
-        "createDesktopShortcut":true,
-        "createStartMenuShortcut":true,
-        "perMachine":true,
-        "unicode":true,
-        "allowToChangeInstallationDirectory":true
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "perMachine": true,
+      "unicode": true,
+      "allowToChangeInstallationDirectory": true
     }
   },
   "dependencies": {
@@ -74,7 +74,8 @@
     "vue-router": "^3.0.1",
     "vue2-ace-editor": "^0.0.13",
     "vuex": "^3.0.1",
-    "vuex-electron": "^1.0.0"
+    "vuex-electron": "^1.0.0",
+    "ws": "^6.1.4"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
