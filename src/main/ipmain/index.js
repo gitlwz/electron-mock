@@ -2,8 +2,11 @@ import { ipcMain } from 'electron';
 import { startServer, refreshProject, reloadProject, addProject, deleteProject, editInterface, deleteInterface } from "../utils"
 import storage from "electron-json-storage";
 import server from "../httpServer/startServer";
+import webSocketServer from "../httpServer/webSocketServer";
 let myServer = new server();
+let mywebSocketServer = new webSocketServer();
 startServer(myServer);
+mywebSocketServer.startServer();
 //刷新项目
 ipcMain.on('refresh-project', function (event, arg) {
     refreshProject();

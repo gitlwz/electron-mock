@@ -82,17 +82,37 @@
                                 ></el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="URL" prop="url">
+                        <el-form-item
+                            :label="
+                                formLabelAlign.method !== 'websocket'
+                                    ? 'URL'
+                                    : '订阅标识'
+                            "
+                            prop="url"
+                            :rules="[
+                                {
+                                    required: true,
+                                    message:
+                                        formLabelAlign.method !== 'websocket'
+                                            ? '请输入接口地址'
+                                            : '请输入订阅标识',
+                                    trigger: 'change'
+                                }
+                            ]"
+                        >
                             <el-input
                                 v-model="formLabelAlign.url"
-                                placeholder="输入请求地址"
+                                :placeholder="
+                                    formLabelAlign.method !== 'websocket'
+                                        ? '输入请求地址'
+                                        : '请输入订阅标识'
+                                "
                             >
                                 <template slot="prepend"
                                     >/</template
                                 >
                             </el-input>
                         </el-form-item>
-                        <div v-show="false">123</div>
                         <el-form-item
                             v-if="formLabelAlign.method === 'websocket'"
                             label="推送频率(毫秒)"
@@ -168,13 +188,6 @@ export default {
                     {
                         required: true,
                         message: "请选择方法类型",
-                        trigger: "change"
-                    }
-                ],
-                url: [
-                    {
-                        required: true,
-                        message: "请输入接口地址",
                         trigger: "change"
                     }
                 ],

@@ -44,7 +44,7 @@ export default class MyServer {
                                 if (!!paths[3]) {
                                     let interfaceList = data.interfaceList || [];
                                     let _interface = interfaceList.find((ele) => ele.url === paths[3])
-                                    if (!!_interface) {
+                                    if (!!_interface && _interface.method === req.method) {
                                         var _data = Mock.mock(JSON.parse(_interface.jsonData))
                                         res.send(_data);
                                         res.end();
