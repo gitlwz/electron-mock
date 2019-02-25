@@ -22,6 +22,11 @@
                     @click="openShell('https://gitlwz.github.io/')"
                     >个人博客</span
                 >
+                <span
+                    class="span-item"
+                    @click="openShell('http://mockjs.com/examples.html')"
+                    >mock语法</span
+                >
                 <span>v{{ version }}</span>
             </div>
         </div>
