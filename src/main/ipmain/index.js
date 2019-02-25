@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { ipcMain, app } from 'electron';
 import { setSocketProt, startSocket, startServer, refreshProject, reloadProject, addProject, deleteProject, editInterface, deleteInterface } from "../utils"
 import storage from "electron-json-storage";
 import server from "../httpServer/startServer";
@@ -92,8 +92,14 @@ ipcMain.on('close-websocket-server', function (event, arg) {
 
 //开启
 ipcMain.on('open-websocket-server', function (event, arg) {
-    console.log("&&&&&&&&&&7",arg)
+    console.log("&&&&&&&&&&7", arg)
     setSocketProt(arg, () => {
         startSocket(mywebSocketServer)
     });
+})
+
+
+//开启
+ipcMain.on('get-app-version', function (event, arg) {
+    event.sender.send('get-app-version-reply', app.getVersion())
 })

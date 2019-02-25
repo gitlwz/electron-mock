@@ -1,6 +1,13 @@
 import { app, BrowserWindow, Menu } from 'electron'
 import './winPage/index.js';
 import "./ipmain/index.js";
+import { autoUpdater } from "electron-updater";
+const log = require('electron-log');
+
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -34,6 +41,28 @@ function createWindow() {
     mainWindow.on('page-title-updated', (event) => {
         event.preventDefault()
     })
+
+
+    autoUpdater.setFeedURL('http://192.168.100.193/electron/');
+    autoUpdater.checkForUpdates()
+    autoUpdater.on('update-downloaded', function () { //下载完成后执行 quitAndInstall
+        autoUpdater.quitAndInstall(); //关闭软件并安装新版本
+    });
+    autoUpdater.on('error', function (error) { //下载完成后执行 quitAndInstall
+        console.log("************111", error)
+    });
+
+    autoUpdater.on('update-not-available', function (error) { //下载完成后执行 quitAndInstall
+        console.log("************222当没有可用更新的时候触发")
+    });
+    autoUpdater.on('update-available', function (error) { //下载完成后执行 quitAndInstall
+        console.log("************333当发现一个可用更新的时候触发，更新包下载会自动开始")
+    });
+
+    autoUpdater.on('checking-for-update', function (error) { //下载完成后执行 quitAndInstall
+        console.log("************444当开始检查更新的时候触发")
+    });
+
 }
 
 app.on('ready', createWindow)
@@ -58,14 +87,32 @@ app.on('activate', () => {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
 
-/*
-import { autoUpdater } from 'electron-updater'
 
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
-})
+// import { autoUpdater } from 'electron-updater'
 
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
- */
+// autoUpdater.on('update-downloaded', () => {
+//     autoUpdater.quitAndInstall()
+// })
+
+// app.on('ready', () => {
+//     autoUpdater.setFeedURL('http://192.168.100.193/electron/');
+//     autoUpdater.checkForUpdates()
+//     autoUpdater.on('update-downloaded', function () { //下载完成后执行 quitAndInstall
+//         autoUpdater.quitAndInstall(); //关闭软件并安装新版本
+//     });
+//     autoUpdater.on('error', function (error) { //下载完成后执行 quitAndInstall
+//         console.log("************111", error)
+//     });
+
+//     autoUpdater.on('update-not-available', function (error) { //下载完成后执行 quitAndInstall
+//         console.log("************222当没有可用更新的时候触发")
+//     });
+//     autoUpdater.on('update-available', function (error) { //下载完成后执行 quitAndInstall
+//         console.log("************333当发现一个可用更新的时候触发，更新包下载会自动开始")
+//     });
+
+//     autoUpdater.on('checking-for-update', function (error) { //下载完成后执行 quitAndInstall
+//         console.log("************444当开始检查更新的时候触发")
+//     });
+// })
+

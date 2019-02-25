@@ -9,17 +9,20 @@
         </div>
         <div class="author">
             <div class="top">
-                <img
-                    :src="favicon"
-                    alt=""
-                >
+                <img :src="favicon" alt="" />
                 <span>刘文柱</span>
             </div>
             <div class="text">年轻无为，卖马为生</div>
             <div class="url">
-                <span class="span-item" @click="serverSetingClick">当前服务配置</span>
-                <span class="span-item" @click="openShell('https://gitlwz.github.io/')">个人博客</span>
-                <!-- <span>v{{.toString()}}</span> -->
+                <span class="span-item" @click="serverSetingClick"
+                    >当前服务配置</span
+                >
+                <span
+                    class="span-item"
+                    @click="openShell('https://gitlwz.github.io/')"
+                    >个人博客</span
+                >
+                <span>v{{ version }}</span>
             </div>
         </div>
         <div class="add-btn">
@@ -43,7 +46,8 @@ export default {
     components: { project },
     data() {
         return {
-            favicon
+            favicon,
+            version: 0
         };
     },
     computed: {
@@ -53,7 +57,13 @@ export default {
     },
     created() {
         this.$electron.ipcRenderer.send("refresh-project");
-        console.log("8888",this.$electron)
+        this.$electron.ipcRenderer.send("get-app-version");
+        this.$electron.ipcRenderer.on(
+            "get-app-version-reply",
+            (error, version) => {
+                this.version = version;
+            }
+        );
     },
     methods: {
         addProject() {
@@ -62,7 +72,7 @@ export default {
         openShell(url) {
             this.$electron.shell.openExternal(url);
         },
-        serverSetingClick(){
+        serverSetingClick() {
             this.$electron.ipcRenderer.send("open-server-seting-pages");
         }
     }
@@ -117,5 +127,4 @@ export default {
     color: #409eff;
     margin-right: 14px;
 }
-
 </style>
