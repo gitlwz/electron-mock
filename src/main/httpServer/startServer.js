@@ -6,6 +6,8 @@ var http = require('http');
 import { dialog } from "electron";
 import storage from "electron-json-storage";
 import { refreshProt, getIPAdress, setProt } from "../utils"
+const restc = require('restc');
+app.use(restc.express())
 export default class MyServer {
     constructor() {
         this.server = null;

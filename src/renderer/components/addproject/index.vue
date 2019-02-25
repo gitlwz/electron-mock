@@ -121,7 +121,7 @@ export default {
                         "addproject-data",
                         this.formLabelAlign
                     );
-                    this.$electron.ipcRenderer.on(
+                    this.$electron.ipcRenderer.once(
                         "addproject-data-reply",
                         (event, arg) => {
                             this.$message({

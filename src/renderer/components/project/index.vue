@@ -77,7 +77,7 @@ export default {
         },
         copyProject() {
             this.$electron.ipcRenderer.send("get-interface-port");
-            this.$electron.ipcRenderer.on(
+            this.$electron.ipcRenderer.once(
                 "get-interface-port-reply",
                 (event, arg) => {
                     let project = this.project;

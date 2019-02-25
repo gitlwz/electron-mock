@@ -78,6 +78,7 @@
         "express": "^4.16.4",
         "lodash": "^4.17.11",
         "mockjs": "^1.0.1-beta3",
+        "restc": "^0.3.2",
         "vue": "^2.5.16",
         "vue-electron": "^1.0.6",
         "vue-router": "^3.0.1",

@@ -99,7 +99,7 @@ ipcMain.on('open-websocket-server', function (event, arg) {
 })
 
 
-//开启
+//获取版本号
 ipcMain.on('get-app-version', function (event, arg) {
     event.sender.send('get-app-version-reply', app.getVersion())
 })

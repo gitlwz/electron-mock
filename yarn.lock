@@ -7684,6 +7684,11 @@ resolve@^1.10.0:
   dependencies:
     path-parse "^1.0.6"
 
+restc@^0.3.2:
+  version "0.3.2"
+  resolved "http://registry.npm.taobao.org/restc/download/restc-0.3.2.tgz#d09d857b6c98904846d8eef2dc04d17219574723"
+  integrity sha1-0J2Fe2yYkEhG2O7y3ATRchlXRyM=
+
 restore-cursor@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/restore-cursor/download/restore-cursor-1.0.1.tgz#34661f46886327fed2991479152252df92daa541"

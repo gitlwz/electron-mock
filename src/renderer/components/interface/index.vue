@@ -245,7 +245,7 @@ export default {
                             "edit-interface",
                             _formLabelAlign
                         );
-                        this.$electron.ipcRenderer.on(
+                        this.$electron.ipcRenderer.once(
                             "edit-interface-reply",
                             (event, arg) => {
                                 this.$message({

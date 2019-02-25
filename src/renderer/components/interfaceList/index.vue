@@ -72,7 +72,11 @@
                                     )
                                 "
                                 size="mini"
-                                :disabled="scope.row.method == 'websocket'?!websocketprot:!httprot"
+                                :disabled="
+                                    scope.row.method == 'websocket'
+                                        ? !websocketprot
+                                        : !httprot
+                                "
                                 title="复制接口连接"
                                 icon="el-icon-share"
                             ></el-button>
@@ -88,6 +92,19 @@
                                 icon="el-icon-delete"
                             ></el-button>
                         </el-button-group>
+                        <el-button
+                            v-if="scope.row.method != 'websocket'"
+                            size="mini"
+                            @click="
+                                extThumbPreview(
+                                    scope.row.url,
+                                    scope.row.projectUrl,
+                                    scope.row
+                                )
+                            "
+                            title="接口预览"
+                            icon="el-icon-view"
+                        ></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -166,6 +183,26 @@ export default {
                 `?id=${id}&projectUrl=${projectUrl}`
             );
         },
+        extThumbPreview(url, projectUrl, row) {
+            this.$electron.ipcRenderer.send("get-interface-port");
+            this.$electron.ipcRenderer.once(
+                "get-interface-port-reply",
+                (event, arg) => {
+                    let project = this.$store.state.projects.projects[
+                        projectUrl
+                    ];
+                    let _url = `http://localhost:${arg}/${projectUrl}/${
+                        project.url
+                    }/${url}`;
+                    if (row.method === "POST") {
+                        _url += "#!method=POST";
+                    } else {
+                        _url += "#!method=get";
+                    }
+                    this.$electron.ipcRenderer.send("open-preview-page", _url);
+                }
+            );
+        },
         copyLnterface(url, projectUrl, row) {
             if (row.method === "websocket") {
                 let project = this.$store.state.projects.projects[projectUrl];
@@ -178,9 +215,10 @@ export default {
                 return;
             }
             this.$electron.ipcRenderer.send("get-interface-port");
-            this.$electron.ipcRenderer.on(
+            this.$electron.ipcRenderer.once(
                 "get-interface-port-reply",
                 (event, arg) => {
+                    console.log("**********", 1);
                     let project = this.$store.state.projects.projects[
                         projectUrl
                     ];
