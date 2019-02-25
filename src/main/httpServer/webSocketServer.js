@@ -1,4 +1,4 @@
-const WebSocket = require('ws');
+var WebSocket = require('ws');
 var Mock = require('mockjs');
 import { dialog } from "electron";
 import storage from "electron-json-storage";

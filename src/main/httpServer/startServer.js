@@ -3,10 +3,10 @@ var express = require('express');
 var app = express();
 var Mock = require('mockjs');
 var http = require('http');
+var restc = require('restc');
 import { dialog } from "electron";
 import storage from "electron-json-storage";
 import { refreshProt, getIPAdress, setProt } from "../utils"
-const restc = require('restc');
 app.use(restc.express())
 export default class MyServer {
     constructor() {
