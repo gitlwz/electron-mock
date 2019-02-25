@@ -19,6 +19,7 @@
             <div class="url">
                 <span class="span-item" @click="serverSetingClick">当前服务配置</span>
                 <span class="span-item" @click="openShell('https://gitlwz.github.io/')">个人博客</span>
+                <!-- <span>v{{.toString()}}</span> -->
             </div>
         </div>
         <div class="add-btn">
@@ -52,6 +53,7 @@ export default {
     },
     created() {
         this.$electron.ipcRenderer.send("refresh-project");
+        console.log("8888",this.$electron)
     },
     methods: {
         addProject() {
