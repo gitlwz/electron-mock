@@ -52,19 +52,20 @@
             "icon": "build/icons/icon.icns"
         },
         "win": {
-            "icon": "build/icons/icon.ico",
-            "target": [
-                "nsis",
-                "zip"
-            ]
+            "icon": "build/icons/icon.ico"
         },
         "linux": {
             "icon": "build/icons"
         },
         "nsis": {
             "oneClick": false,
+            "perMachine": true,
+            "allowElevation": true,
             "allowToChangeInstallationDirectory": true,
-            "perMachine": true
+            "createDesktopShortcut": true,
+            "runAfterFinish": true,
+            "installerIcon": "build/icons/icon.ico",
+            "uninstallerIcon": "build/icons/icon.ico"
         }
     },
     "dependencies": {
