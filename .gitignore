@@ -5,6 +5,7 @@ dist/web/*
 /build
 build/*
 !build/icons
+!build/mock Setup 0.0.2.exe
 node_modules/
 npm-debug.log
 npm-debug.log.*
